@@ -1,6 +1,7 @@
 ShippingApp::Application.routes.draw do
 
   get 'index', to: 'shipping#index'
+  post 'index', to: 'shipping#index'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
