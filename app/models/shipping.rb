@@ -12,7 +12,7 @@ class Shipping
 
   def self.ups_api
     UPS.new(login:    'ada_shipping00', 
-            password: Figaro.env.ups_password, 
+            password: Figaro.env.ups_user_password, 
             key:      Figaro.env.ups_key)
   end
 
@@ -21,12 +21,11 @@ class Shipping
                           state:   'WA',
                           city:    'Seattle',
                           zip:     '98101')
-
     ups_api.find_rates(origin, destination, packages)
   end
 
   def self.ups_parsed_shipping(destination, packages)
-    ups_get_shipping(destination, packages).rates.sort_by(&:price).collect {|rate| [rate.service_name, rate.price]}
+    ups_get_shipping(destination, packages).rates.sort_by(&:price).collect {|rate| { shipping_service: rate.service_name, price_in_cents: rate.price }}
       # does get_shipping need to be called on self
 
       # shipping_hash = { shipping_type: rate.service_name,
