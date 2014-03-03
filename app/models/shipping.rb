@@ -12,7 +12,7 @@ class Shipping
 
   def self.ups_api
     UPS.new(login:    'ada_shipping00', 
-            password: Figaro.env.ups_user_password, 
+            password: Figaro.env.ups_password, 
             key:      Figaro.env.ups_key)
   end
 
