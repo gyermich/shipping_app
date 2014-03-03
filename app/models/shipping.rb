@@ -1,19 +1,19 @@
 class Shipping
   include ActiveMerchant::Shipping
 
-  def setup_api(service)
-    case service
-    when "ups"
-      ups_api
-    when "fedex"
-      fedex_api
-    end
-  end
+  # def setup_api(service)
+  #   case service
+  #   when "ups"
+  #     ups_api
+  #   when "fedex"
+  #     fedex_api
+  #   end
+  # end
 
   def self.ups_api
     UPS.new(login:    'ada_shipping00', 
-            password: ENV["UPS_USER_PASSWORD"], 
-            key:      ENV["UPS_KEY"])
+            password: Figaro.env.ups_password, 
+            key:      Figaro.env.ups_key)
   end
 
   def self.ups_get_shipping(destination, packages)
