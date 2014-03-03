@@ -2,20 +2,18 @@ class ShippingController < ApplicationController
 
   def index
 
-    packages = [
-      Package.new(  100,                        # 100 grams
-                    [93,10],                    # 93 cm long, 10 cm diameter
-                    :cylinder => true),         # cylinders have different volume calculations
+    packages = Package.new( params[:packages][:weight].to_i * 16,  # lbs, times 16 oz/lb.
+                            [ params[:packages][:length].to_i,     # LxWxH, inches
+                              params[:packages][:width].to_i,
+                              params[:packages][:height].to_i
+                            ],
+                            units: :imperial                  # not grams, not centimetres
+                          )
 
-      Package.new(  (7.5 * 16),                 # 7.5 lbs, times 16 oz/lb.
-                    [15, 10, 4.5],              # 15x10x4.5 inches
-                    :units => :imperial)        # not grams, not centimetres
-    ]
-
-      destination = Location.new( :country => 'CA',
-                                  :province => 'ON',
-                                  :city => 'Ottawa',
-                                  :postal_code => 'K1P 1J1')
+    destination = Location.new( country:     params[:destination][:country],
+                                province:    params[:destination][:province],
+                                city:        params[:destination][:city],
+                                postal_code: params[:destination][:postal_code].to_i )
 
     # @active_shipping_response = { hello: "your json" }
     @active_shipping_response = Shipping.ups_parsed_shipping(destination, packages)
@@ -24,8 +22,10 @@ class ShippingController < ApplicationController
       format.json { render json: @active_shipping_response, status: :ok  }
     end
   end
+<<<<<<< HEAD
 
 
   
+
 
 end
