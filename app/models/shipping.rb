@@ -15,7 +15,7 @@ class Shipping
             password: Figaro.env.ups_password, 
             key:      Figaro.env.ups_key)
   end
-
+  
   def self.ups_get_shipping(destination, packages)
     origin = Location.new(country: 'US',
                           state:   'WA',
