@@ -22,7 +22,7 @@ class ShippingController < ApplicationController
       format.json { render json: @active_shipping_response, status: :ok  }
     end
   end
-<<<<<<< HEAD
+
 
 
   
