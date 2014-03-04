@@ -14,31 +14,49 @@ describe Shipping do
                     :cylinder => true)] }
 
       it "executes the .find_rates method" do
-        ups_api = double(:ups_api)
-        described_class.stub(:ups_api).and_return(ups_api)
+        api = double(:ups_api)
+        described_class.stub(:ups_api).and_return(api)
 
-        ups_api.should_receive(:find_rates).with(anything, :destination, :packages)
+        api.should_receive(:find_rates).with(anything, :destination, :packages)
         
-        results = described_class.ups_get_shipping(:destination, :packages)
+        results = described_class.get_shipping(:destination, :packages, api)
       end
 
       xit "REMOTE returns at least one result" do
-        results = described_class.ups_parsed_shipping(destination, packages)
+        api = UPS.new(login:                  'ada_shipping00', 
+            password: Figaro.env.ups_password,
+            key:      Figaro.env.ups_key)
+
+        results = described_class.parsed_shipping(destination, packages, api)
         expect(results).to be_an_instance_of(Array)
       end
 
       xit "REMOTE returns at least one result" do
-        results = described_class.ups_parsed_shipping(destination, packages)
+
+        api = UPS.new(login:                  'ada_shipping00', 
+            password: Figaro.env.ups_password,
+            key:      Figaro.env.ups_key)
+
+        results = described_class.parsed_shipping(destination, packages, api)
         expect(results).to_not be_empty
       end
 
       it " is parsable" do
+        api = double(:ups_api)
+        described_class.stub(:ups_api).and_return(api)
+
         r = double(:ups_response)
         ship_rates = double(:something, :price => 1, :service_name => "standard")
 
-        Shipping.stub(:ups_get_shipping).with(destination, packages) { r }
+        api.should_receive(:find_rates).and_return(r)
+
+        Shipping.stub(:ups_get_shipping).with(destination, packages, api) { r }
         expect(r).to receive(:rates) { [ship_rates] }
-        expect(Shipping.ups_parsed_shipping(destination, packages)).to be_an_instance_of(Array)
+        expect(Shipping.parsed_shipping(destination, packages, api)).to be_an_instance_of(Array)
+      end
+
+      it "gets ups and fedex shiping options" do
+
       end
 
     end
