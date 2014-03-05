@@ -57,8 +57,9 @@ describe Shipping do
         expect(Shipping.parsed_shipping(destination, packages, api)).to be_an_instance_of(Array)
       end
 
-      it "gets ups and fedex shiping options" do
+      it "gets UPS and fedex shiping options" do
 
+        expect(Shipping.all_the_shipping(destination, packages).length).to eq(2)
       end
 
     end
