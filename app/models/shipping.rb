@@ -8,7 +8,7 @@ class Shipping
   end
 
   def self.fedex_api
-    FedEx.new(account:    Figaro.env.fedex_test_account_number,
+    FedEx.new(account:  Figaro.env.fedex_test_account_number,
             password:   Figaro.env.fedex_test_password,
             key:        Figaro.env.fedex_test_key,
             login:      Figaro.env.fedex_test_meter_number,
@@ -28,6 +28,6 @@ class Shipping
   end
 
   def self.all_the_shipping(destination, packages)
-    { ups: parsed_shipping(destination, packages, ups_api), fedex: parsed_shipping(destination, packages, fedex_api)}
+    { ups: parsed_shipping(destination, packages, ups_api), fedex: parsed_shipping(destination, packages, fedex_api) }
   end
 end
