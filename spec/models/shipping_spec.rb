@@ -47,7 +47,7 @@ describe Shipping do
 
         r = double(:ups_response)
         ship_rates = double(:something, :price => 1, :service_name => "standard")
-
+        
         api.should_receive(:find_rates).and_return(r)
 
         Shipping.stub(:ups_get_shipping).with(destination, packages, api) { r }
@@ -55,8 +55,9 @@ describe Shipping do
         expect(Shipping.parsed_shipping(destination, packages, api)).to be_an_instance_of(Array)
       end
 
-      it "gets ups and fedex shiping options" do
+      it "gets UPS and fedex shiping options" do
 
+        expect(Shipping.all_the_shipping(destination, packages).length).to eq(2)
       end
 
     end
