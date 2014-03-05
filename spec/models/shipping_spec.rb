@@ -47,9 +47,7 @@ describe Shipping do
 
         r = double(:ups_response)
         ship_rates = double(:something, :price => 1, :service_name => "standard")
-
-        puts ship_rates.inspect
-
+        
         api.should_receive(:find_rates).and_return(r)
 
         Shipping.stub(:ups_get_shipping).with(destination, packages, api) { r }
